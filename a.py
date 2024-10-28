@@ -4,7 +4,8 @@ def load_json_file(file_path):
   """
   주어진 경로의 JSON 파일을 불러와 파이썬 객체로 변환하여 리턴합니다.
 
-  :param file_path: 
+  :param file_path: JSON 파일의 경로
+  :return: JSON 데이터를 파이썬 객체로 변환한 결과
   """
 
   try:
