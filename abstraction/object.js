@@ -1,19 +1,17 @@
-// 생성자 함수 정의
-function Samhundred() {
-  // 1. schoolName이라는 키를 정적으로 추가합니다.
-  this.schoolName = 'High School';
+// Samhundred 생성자 함수
+function Samhundred(name, students) {
+  this.schoolName = name; // 각 객체마다 다른 학교 이름을 설정 가능
+  this.schoolStudent = students; // 각 객체마다 다른 학생 배열을 설정 가능
 
-  // 2. schoolStudent라는 배열을 동적으로 추가합니다.
-  this.schoolStudent = ['StudentA', 'StudentB', 'StudentC'];
-
-  // 3. smile이라는 메서드를 동적으로 추가하여 schoolStudent 배열의 첫 번째 값을 출력합니다.
   this.smile = function() {
       console.log(this.schoolStudent[0]);
   };
 }
 
-// 생성자 함수를 사용하여 samhundred 객체를 생성합니다.
-const samhundred = new Samhundred();
+// Samhundred 객체를 각각 다른 데이터로 생성
+const school1 = new Samhundred('High School A', ['Alice', 'Bob', 'Charlie']);
+const school2 = new Samhundred('High School B', ['David', 'Emma', 'Frank']);
 
-// 메서드 호출하여 확인
-samhundred.smile(); // 출력: StudentA
+// 각 객체의 메서드를 호출
+school1.smile(); // 출력: Alice
+school2.smile(); // 출력: David
