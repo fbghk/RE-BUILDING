@@ -43,3 +43,9 @@ print("\n장르별 비선호도:")
 for genre, count in sorted_hate_genre_counts:
     percentage = (count / total_users) * 100  # 퍼센트 계산
     print(f'"{genre}" {count}개 ({percentage:.2f}%)')
+
+genre_names = [genre for genre, count in sorted_genre_counts]
+genre_percentages = [(count / total_users) * 100 for genre, count in sorted_genre_counts]
+
+print(genre_names)
+print(genre_percentages)
