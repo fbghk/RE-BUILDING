@@ -13,7 +13,8 @@ genre_names = [genre["name"] for genre in data["genres"]]
 genre_percentages = [genre["percentage"] for genre in data["genres"]]
 
 # x 위치를 2씩 띄워서 막대 사이 간격 확보
-x_positions = range(0, len(genre_names) * 2, 2)
+# 여기서 3으로 늘려서 간격을 더 넓혔습니다.
+x_positions = range(0, len(genre_names) * 3, 3)
 
 # 세로 막대 차트 생성
 plt.figure(figsize=(12, 8))  # 차트 크기 조정
@@ -22,9 +23,9 @@ plt.xticks(x_positions, genre_names, rotation=90)  # x축 레이블 설정 및 �
 plt.ylabel("Percentage (%)")
 plt.title("Genre Preferences by Percentage")
 
-# 퍼센티지 값을 각 막대 위에 표시
+# 퍼센티지 값을 각 막대 위에 표시 (글꼴 크기 조정)
 for i, value in zip(x_positions, genre_percentages):
-    plt.text(i, value + 0.5, f"{value:.1f}%", ha="center", va="bottom")
+    plt.text(i, value + (0.02 * max(genre_percentages)), f"{value:.1f}%", ha="center", va="bottom", fontsize=8)  # fontsize 8로 줄임
 
 plt.tight_layout()  # 차트 요소가 겹치지 않도록 자동 조정
 plt.show()
