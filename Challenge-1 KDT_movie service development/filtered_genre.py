@@ -26,14 +26,20 @@ for user in data['users']:
     for genre in user.get('preferences', {}).get('hate', []):
         hate_genre_counts[genre] += 1
 
-# 결과 출력 (선호도 퍼센트)
+# 선호도 퍼센트 계산 후 정렬
+sorted_genre_counts = sorted(genre_counts.items(), key=lambda x: (x[1] / total_users) * 100, reverse=True)
+
+# 비선호도 퍼센트 계산 후 정렬
+sorted_hate_genre_counts = sorted(hate_genre_counts.items(), key=lambda x: (x[1] / total_users) * 100, reverse=True)
+
+# 결과 출력 (선호도)
 print("장르별 선호도:")
-for genre, count in genre_counts.items():
+for genre, count in sorted_genre_counts:
     percentage = (count / total_users) * 100  # 퍼센트 계산
     print(f'"{genre}" {count}개 ({percentage:.2f}%)')
 
-# 결과 출력 (비선호도 퍼센트)
+# 결과 출력 (비선호도)
 print("\n장르별 비선호도:")
-for genre, count in hate_genre_counts.items():
+for genre, count in sorted_hate_genre_counts:
     percentage = (count / total_users) * 100  # 퍼센트 계산
     print(f'"{genre}" {count}개 ({percentage:.2f}%)')
