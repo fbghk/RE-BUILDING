@@ -1,5 +1,9 @@
 import json
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+
+# 한글 폰트 설정
+plt.rc('font', family='Malgun Gothic')  # 'Malgun Gothic'이 설치된 경우
 
 # JSON 파일 불러오기
 with open("genre_preferences.json", "r", encoding="utf-8") as file:
