@@ -2,7 +2,7 @@ import json
 import matplotlib.pyplot as plt
 
 # 한글 폰트 설정
-plt.rc('font', family='Malgun Gothic')  # 'Malgun Gothic'이 설치된 경우
+plt.rc('font', family='Malgun Gothic')
 
 # JSON 파일 불러오기
 with open("genre_preferences.json", "r", encoding="utf-8") as file:
@@ -12,22 +12,31 @@ with open("genre_preferences.json", "r", encoding="utf-8") as file:
 genre_names = [genre["name"] for genre in data["genres"]]
 genre_percentages = [genre["percentage"] for genre in data["genres"]]
 
-# y 위치를 3씩 띄워서 막대 사이 간격 확보
-y_positions = range(0, len(genre_names) * 3, 3)
+# 차트 생성 - 세로 크기를 데이터 개수에 따라 동적으로 조절
+plt.figure(figsize=(12, max(8, len(genre_names) * 0.4)))  # 데이터 개수에 따라 세로 크기 조절
+
+# y 위치를 2씩 띄워서 간격 축소 (기존 3에서 2로 변경)
+y_positions = range(0, len(genre_names) * 2, 2)
 
 # 가로 막대 차트 생성
-plt.figure(figsize=(12, 8))  # 차트 크기 조정
-plt.barh(y_positions, genre_percentages, color="skyblue", height=1.5)  # height로 막대 두께 조정
-plt.yticks(y_positions, genre_names)  # y축 레이블 설정
+plt.barh(y_positions, genre_percentages, color="skyblue", height=0.8)  # height를 0.8로 축소
+
+# y축 레이블 설정 및 폰트 크기 조절
+plt.yticks(y_positions, genre_names, fontsize=8)
+
 plt.xlabel("Percentage (%)")
 plt.title("Genre Preferences by Percentage")
 
-# 퍼센티지 값을 각 막대 옆에 표시 (글꼴 크기 조정)
+# 퍼센티지 값 표시
 for i, value in zip(y_positions, genre_percentages):
-    plt.text(value + (0.01 * max(genre_percentages)), i, f"{value:.1f}%", va="center", fontsize=6.5)  # fontsize 6.5로 줄임
+    plt.text(value + (0.01 * max(genre_percentages)), i, 
+             f"{value:.1f}%", va="center", fontsize=8)
 
-# 여백을 줄여서 차트 틀과 막대 사이의 빈칸 없애기
-plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
+# 여백 조절
+plt.subplots_adjust(left=0.2,    # y축 레이블을 위한 왼쪽 여백
+                   right=0.95,   # 오른쪽 여백 축소
+                   top=0.95,     # 위쪽 여백 축소
+                   bottom=0.05)  # 아래쪽 여백 축소
 
-plt.tight_layout()  # 차트 요소가 겹치지 않도록 자동 조정
+# tight_layout은 제거하고 위의 subplots_adjust만 사용
 plt.show()
