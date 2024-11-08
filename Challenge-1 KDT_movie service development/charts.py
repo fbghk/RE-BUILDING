@@ -26,5 +26,8 @@ plt.title("Genre Preferences by Percentage")
 for i, value in zip(y_positions, genre_percentages):
     plt.text(value + (0.01 * max(genre_percentages)), i, f"{value:.1f}%", va="center", fontsize=6.5)  # fontsize 6.5로 줄임
 
+# 여백을 줄여서 차트 틀과 막대 사이의 빈칸 없애기
+plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
+
 plt.tight_layout()  # 차트 요소가 겹치지 않도록 자동 조정
 plt.show()
