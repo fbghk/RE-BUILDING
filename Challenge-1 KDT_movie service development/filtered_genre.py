@@ -47,5 +47,13 @@ for genre, count in sorted_hate_genre_counts:
 genre_names = [genre for genre, count in sorted_genre_counts]
 genre_percentages = [(count / total_users) * 100 for genre, count in sorted_genre_counts]
 
-print(genre_names)
-print(genre_percentages)
+# 선호도 데이터를 딕셔너리 형식으로 준비
+genre_data = {
+    "genres": [{"name": genre, "percentage": percentage} for genre, percentage in zip(genre_names, genre_percentages)]
+}
+
+# JSON 파일로 저장
+with open("genre_preferences.json", "w", encoding="utf-8") as file:
+    json.dump(genre_data, file, ensure_ascii=False, indent=4)
+
+print("데이터가 genre_preferences.json 파일로 저장되었습니다.")
