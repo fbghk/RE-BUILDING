@@ -81,8 +81,18 @@ for group, users in age_groups.items():
     # 연령대별 선호도 저장
     age_group_preferences[group] = genre_percentages
 
-# 결과 출력: 각 연령대의 선호도 비율 표시
+# 결과 출력 및 파일 저장
+output_data = {}
+
 for group, preferences in age_group_preferences.items():
     print(f"{group} 선호도:")
+    output_data[group] = []
     for genre, percentage in sorted(preferences.items(), key=lambda x: -x[1]):
         print(f"  {genre}: {percentage:.1f}%")
+        output_data[group].append({"genre": genre, "percentage": round(percentage, 1)})
+
+# JSON 파일로 저장
+with open('age-group-preferences.json', 'w', encoding='utf-8') as file:
+    json.dump(output_data, file, ensure_ascii=False, indent=4)
+
+print("\n결과가 'age-group-preferences.json' 파일로 저장되었습니다.")
