@@ -1,5 +1,4 @@
 import json
-from collections import Counter
 
 # JSON 파일 로드
 with open('movie-information.json', 'r', encoding='utf-8') as file:
@@ -25,13 +24,13 @@ age_groups = {
 # 비회원 카운트 변수
 non_members = 0
 
-# 연령대 그룹화
+# 연령대 그룹화 함수
 for user in data['users']:
-    age = user.get('age')
+    age = user.get('age')  # 'age'가 없으면 None 반환
     if age is None:
-        non_members += 1
+        non_members += 1  # 비회원 수 증가
         continue  # 비회원이므로 다음 사용자로 넘어감
-
+    
     # 연령대 분류
     if 17 <= age <= 19:
         age_groups['10대 후반'].append(user)
@@ -60,38 +59,30 @@ for user in data['users']:
     elif 57 <= age <= 59:
         age_groups['50대 후반'].append(user)
 
-# 연령대별 선호 장르 퍼센티지 계산
+# 각 연령대의 선호도 계산
 age_group_preferences = {}
-
 for group, users in age_groups.items():
     if not users:
-        age_group_preferences[group] = "회원 없음"
-        continue
-
-    # 모든 선호 장르 수집
-    likes = []
-    for user in users:
-        likes.extend(user['preferences'].get('like', []))  # 선호 장르 목록 추가
-
-    # 장르별 카운트 계산
-    genre_counts = Counter(likes)
-    total_likes = sum(genre_counts.values())
-
-    # 퍼센티지로 변환
-    genre_percentages = {genre: (count / total_likes) * 100 for genre, count in genre_counts.items()}
+        continue  # 회원 정보가 없는 연령대는 건너뜀
     
-    # 내림차순 정렬
-    sorted_genre_percentages = dict(sorted(genre_percentages.items(), key=lambda item: item[1], reverse=True))
+    # 각 장르의 선호도 카운트 초기화
+    genre_count = {}
+    for user in users:
+        for genre in user.get('preferences', {}).get('like', []):
+            genre_count[genre] = genre_count.get(genre, 0) + 1
+    
+    # 퍼센티지 계산
+    total_users = len(users)
+    genre_percentages = {
+        genre: (count / total_users) * 100
+        for genre, count in genre_count.items()
+    }
+    
+    # 연령대별 선호도 저장
+    age_group_preferences[group] = genre_percentages
 
-    # 결과 저장
-    age_group_preferences[group] = sorted_genre_percentages
-
-# 결과 출력: 연령대별 선호도
+# 결과 출력: 각 연령대의 선호도 비율 표시
 for group, preferences in age_group_preferences.items():
     print(f"{group} 선호도:")
-    if preferences == "회원 없음":
-        print("  - 회원 없음")
-    else:
-        for genre, percentage in preferences.items():
-            print(f"  {genre}: {percentage:.1f}%")
-    print()
+    for genre, percentage in sorted(preferences.items(), key=lambda x: -x[1]):
+        print(f"  {genre}: {percentage:.1f}%")
